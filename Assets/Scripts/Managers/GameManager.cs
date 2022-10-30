@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("Components")]
+    [Space(10)]
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private ActorsManager _actorsManager;
     [SerializeField] private WorldManager _worldManager;
@@ -11,7 +12,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        
+#if !UNITY_EDITOR
+            Debug.unityLogger.logEnabled = false;
+            Application.targetFrameRate = 60;
+            QualitySettings.vSyncCount = 0;
+#endif
     }
 
     private void Start()

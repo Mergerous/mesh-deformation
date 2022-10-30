@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429d8a1436891ae47a796a12c9ba539a, type: 3}
   m_Name: New Brush Configuration SO
   m_EditorClassIdentifier: 
-  _brushSize: 0.1
+  _brushSize: 0.01
   _brushStrenght: 1.38
-  _smoothness: {x: 0.01, y: 0.53}
+  _smoothness: 2

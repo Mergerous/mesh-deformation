@@ -19,6 +19,8 @@ namespace Scripts.Controllers
             _behaviour.SetMouseUpCallback(OnMouseUp);
         }
 
+        #region Private
+
         private void OnHit(RaycastHit hit)
         {
             if (hit.transform.TryGetComponent(out SurfaceRenderer renderer))
@@ -27,7 +29,8 @@ namespace Scripts.Controllers
                 renderer.SetStrength(_configuration.BrushStrength);
                 renderer.SetSmoothness(_configuration.Smoothness);
                 renderer.SetPosition(hit.textureCoord);
-                renderer.Dispatch();
+                renderer.DispatchTemp();
+                renderer.RedrawMesh();
             }
         }
 
@@ -35,7 +38,9 @@ namespace Scripts.Controllers
         {
             if (hit.transform.TryGetComponent(out SurfaceRenderer renderer))
             {
-                renderer.Rebuild();
+                renderer.DispatchPersistent();
+                renderer.SetPosition(Vector3.positiveInfinity);
+                renderer.DispatchTemp();
             }
 
             if (hit.transform.TryGetComponent(out NavMeshSurface surface))
@@ -43,5 +48,7 @@ namespace Scripts.Controllers
                 surface.BuildNavMesh();
             }
         }
+
+        #endregion
     }
 }

@@ -11,6 +11,8 @@ namespace Scripts.Behaviours
         private Transform _currentTarget;
         private event Func<Transform> _targetRequest;
 
+        #region Unity
+
         private void Start()
         {
             _currentTarget = _targetRequest.Invoke();
@@ -28,6 +30,10 @@ namespace Scripts.Behaviours
             }
         }
 
+        #endregion
+
+        #region Public
+
         public void SetSpeed(float speed)
         {
             _agent.speed = speed;
@@ -37,5 +43,7 @@ namespace Scripts.Behaviours
         {
             _targetRequest = request;
         }
+
+        #endregion
     }
 }

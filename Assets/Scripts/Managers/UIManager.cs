@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Scripts.Controllers;
 using UnityEngine;
 
 namespace Scripts.Managers

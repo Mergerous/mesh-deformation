@@ -9,6 +9,8 @@ namespace Scripts.Behaviours
         private event Action<RaycastHit> _hitCallback;
         private event Action<RaycastHit> _mouseUpCallback;
 
+        #region Unity
+
         private void Awake()
         {
             _camera = Camera.main;
@@ -22,7 +24,6 @@ namespace Scripts.Behaviours
                 if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit))
                 {
                     _hitCallback?.Invoke(hit);
-
                 }
             }
             if (Input.GetMouseButtonUp(0))
@@ -35,6 +36,10 @@ namespace Scripts.Behaviours
             }
         }
 
+        #endregion
+
+        #region Public
+
         public void SetMouseUpCallback(Action<RaycastHit> callback)
         {
             _mouseUpCallback = callback;
@@ -44,5 +49,7 @@ namespace Scripts.Behaviours
         {
             _hitCallback = callback;
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,6 @@
+using Scripts.Behaviours;
 using Scripts.Configs;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace Scripts.Managers
@@ -8,8 +10,11 @@ namespace Scripts.Managers
         [Header("Options")]
         [SerializeField] private SurfaceConfigurationSO _surfaceConfigurationSo;
 
-        [Header("Components")] [SerializeField]
-        private SurfaceRenderer _surfaceRenderer;
+        [Header("Components")] 
+        [SerializeField] private SurfaceRenderer _surfaceRenderer;
+        [SerializeField] private NavMeshSurface _navMeshSurface;
+
+        #region Unity
 
         private void Awake()
         {
@@ -17,9 +22,17 @@ namespace Scripts.Managers
             _surfaceRenderer.SetTextureResolution(_surfaceConfigurationSo.TextureResolution);
         }
 
+        #endregion
+
+        #region Public
+
         public void ClearSurfaces()
         {
-            _surfaceRenderer.Clear();
+            _surfaceRenderer.DispatchClear();
+            _surfaceRenderer.RedrawMesh();
+            _navMeshSurface.BuildNavMesh();
         }
+
+        #endregion
     }
 }
