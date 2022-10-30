@@ -1,0 +1,65 @@
+#pragma kernel CSMain
+#pragma kernel CSMainHeightMap
+#pragma kernel CSMainHeightMapSave
+
+struct VertexData
+{
+    float4 pos;
+    float4 uv;
+};
+
+RWStructuredBuffer<VertexData> vertexBuffer;
+RWTexture2D<float4> heightMap;
+RWTexture2D<float4> heightMap2;
+float2 _Smooth;
+float2 _MousePos;
+float _Radius;
+float _Power;
+uint _texResolution;
+
+Texture2D<float> heightMapTex;
+Texture2D<float> heightMapTex2;
+
+SamplerState samplerheightMapTex;
+SamplerState samplerheightMapTex2;
+
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float4 pos = vertexBuffer[id.x].pos;
+    const float2 uv = vertexBuffer[id.x].uv.xy;
+    
+    pos.y = clamp(0, 1, heightMapTex.SampleLevel(samplerheightMapTex, uv, 0)
+        + heightMapTex2.SampleLevel(samplerheightMapTex2, uv, 0)) * _Power;
+    
+    vertexBuffer[id.x].pos = pos;
+    vertexBuffer[id.x].uv.z = pos.y * 0.1f;
+}
+
+float GetNewPosition(float2 uv)
+{
+    const float dist = abs(distance(_MousePos, uv));
+    const float interpolation = smoothstep(_Smooth.x, _Smooth.y, dist);
+    const float power = 1 - saturate(interpolation / _Radius);
+
+    return clamp(power,0,power);
+}
+
+[numthreads(8,8,1)]
+void CSMainHeightMapSave(uint3 id : SV_DispatchThreadID)
+{
+    const float2 uv = float2(id.xy) / float(_texResolution);
+    const float pos = GetNewPosition(uv);
+    heightMap2[id.xy] += pos;
+}
+
+[numthreads(8,8,1)]
+void CSMainHeightMap (uint3 id : SV_DispatchThreadID)
+{
+    const float2 uv = float2(id.xy) / float(_texResolution);
+    const float pos = GetNewPosition(uv);
+    heightMap[id.xy] = pos;
+}
+
+
