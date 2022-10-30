@@ -1,6 +1,6 @@
 #pragma kernel CSMain
-#pragma kernel CSMainHeightMap
-#pragma kernel CSMainHeightMapSave
+#pragma kernel CSMainHeightMapTemp
+#pragma kernel CSMainHeightMapPersistent
 #pragma kernel CSMainHeightMapClear
 
 struct VertexData
@@ -10,19 +10,19 @@ struct VertexData
 };
 
 RWStructuredBuffer<VertexData> vertexBuffer;
-RWTexture2D<float4> heightMap;
-RWTexture2D<float4> heightMap2;
+RWTexture2D<float4> heightMapTemp;
+RWTexture2D<float4> heightMapPersistent;
 float _Smooth;
 float2 _MousePos;
 float _Radius;
 float _Power;
 uint _texResolution;
 
-Texture2D<float> heightMapTex;
-Texture2D<float> heightMapTex2;
+Texture2D<float> heightMapTexTemp;
+Texture2D<float> heightMapTexPersistent;
 
-SamplerState samplerheightMapTex;
-SamplerState samplerheightMapTex2;
+SamplerState samplerheightMapTexTemp;
+SamplerState samplerheightMapTexPersistent;
 
 
 [numthreads(8,8,1)]
@@ -31,8 +31,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float4 pos = vertexBuffer[id.x].pos;
     const float2 uv = vertexBuffer[id.x].uv.xy;
     
-    pos.y = clamp(0, 1, heightMapTex.SampleLevel(samplerheightMapTex, uv, 0)
-        + heightMapTex2.SampleLevel(samplerheightMapTex2, uv, 0)) * _Power;
+    pos.y = clamp(0, 1, heightMapTexTemp.SampleLevel(samplerheightMapTexTemp, uv, 0)
+        + heightMapTexPersistent.SampleLevel(samplerheightMapTexPersistent, uv, 0)) * _Power;
     
     vertexBuffer[id.x].pos = pos;
     vertexBuffer[id.x].uv.z = pos.y * 0.1f;
@@ -50,17 +50,17 @@ float GetNewPosition(uint3 id)
 [numthreads(8,8,1)]
 void CSMainHeightMapClear(uint3 id : SV_DispatchThreadID)
 {
-    heightMap[id.xy] = 0;
-    heightMap2[id.xy] = 0;
+    heightMapTemp[id.xy] = 0;
+    heightMapPersistent[id.xy] = 0;
 }
 [numthreads(8,8,1)]
-void CSMainHeightMapSave(uint3 id : SV_DispatchThreadID)
+void CSMainHeightMapPersistent(uint3 id : SV_DispatchThreadID)
 {
-    heightMap2[id.xy] += GetNewPosition(id);
+    heightMapPersistent[id.xy] += GetNewPosition(id);
 }
 
 [numthreads(8,8,1)]
-void CSMainHeightMap (uint3 id : SV_DispatchThreadID)
+void CSMainHeightMapTemp(uint3 id : SV_DispatchThreadID)
 {
-    heightMap[id.xy] = GetNewPosition(id);
+    heightMapTemp[id.xy] = GetNewPosition(id);
 }

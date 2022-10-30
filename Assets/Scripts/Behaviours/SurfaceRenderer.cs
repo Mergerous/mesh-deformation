@@ -14,7 +14,7 @@ namespace Scripts.Behaviours
 
         [SerializeField] private ComputeShader _computeShader;
         [SerializeField] private MeshFilter _meshFilter;
-        private int _textureResolution;
+
 
         private ComputeBuffer _vertexBuffer;
         private RenderTexture tex;
@@ -25,17 +25,22 @@ namespace Scripts.Behaviours
         private VertexData[] meshVertData;
 
         private int dispatchCount = 0;
+        private int _textureResolution = 512;
 
         private int _kernel;
-        private int _kernelHeightMap;
-        private int _kernelHeightMapSave;
+        private int _kernelHeightMapTemp;
+        private int _kernelHeightMapPersistent;
         private int _kernelHeightMapClear;
+
+        private const int BufferStride = 8 * 4;
+
+        #region Unity
 
         private void Start()
         {
             _kernel = _computeShader.FindKernel("CSMain");
-            _kernelHeightMap = _computeShader.FindKernel("CSMainHeightMap");
-            _kernelHeightMapSave = _computeShader.FindKernel("CSMainHeightMapSave");
+            _kernelHeightMapTemp = _computeShader.FindKernel("CSMainHeightMapTemp");
+            _kernelHeightMapPersistent = _computeShader.FindKernel("CSMainHeightMapPersistent");
             _kernelHeightMapClear = _computeShader.FindKernel("CSMainHeightMapClear");
 
             var mesh = _meshFilter.mesh;
@@ -69,37 +74,46 @@ namespace Scripts.Behaviours
             _dispatchCountHeightMap.x = Mathf.CeilToInt(_textureResolution / threadX) + 1;
             _dispatchCountHeightMap.y = Mathf.CeilToInt(_textureResolution / threadY) + 1;
 
-            _vertexBuffer = new ComputeBuffer(mesh.vertexCount, 8 * 4);
+            _vertexBuffer = new ComputeBuffer(mesh.vertexCount, BufferStride);
             _vertexBuffer.SetData(meshVertData);
 
             _computeShader.SetInt("_texResolution", _textureResolution);
-            _computeShader.SetTexture(_kernelHeightMap, "heightMap", tex); // read & write
-            _computeShader.SetTexture(_kernelHeightMapClear, "heightMap", tex); // read & write
-            _computeShader.SetTexture(_kernelHeightMapClear, "heightMap2", tex2); // read & write
-            _computeShader.SetTexture(_kernelHeightMapSave, "heightMap2", tex2); // read & write
-            _computeShader.SetTexture(_kernel, "heightMapTex", tex); // readonly
-            _computeShader.SetTexture(_kernel, "heightMapTex2", tex2); // readonly
+            _computeShader.SetTexture(_kernelHeightMapTemp, "heightMapTemp", tex); // read & write
+            _computeShader.SetTexture(_kernelHeightMapClear, "heightMapTemp", tex); // read & write
+            _computeShader.SetTexture(_kernelHeightMapClear, "heightMapPersistent", tex2); // read & write
+            _computeShader.SetTexture(_kernelHeightMapPersistent, "heightMapPersistent", tex2); // read & write
+            _computeShader.SetTexture(_kernel, "heightMapTexTemp", tex); // readonly
+            _computeShader.SetTexture(_kernel, "heightMapTexPersistent", tex2); // readonly
             _computeShader.SetBuffer(_kernel, "vertexBuffer", _vertexBuffer); // read & w
 
-            Clear();
+            DispatchClear();
+            RedrawMesh();
         }
+
+        #endregion
+
+        #region Public
 
         private void OnDestroy()
         {
             _vertexBuffer.Dispose();
         }
-
-        public void Dispatch()
+        
+        public void DispatchTemp()
         {
-            _computeShader.Dispatch(_kernelHeightMap, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
-            _computeShader.Dispatch(_kernel, dispatchCount, 1, 1);
-
-            _vertexBuffer.GetData(meshVertData);
-            var mesh = _meshFilter.mesh;
-            mesh.MarkDynamic();
-            mesh.SetVertices(meshVertData.Select(v => (Vector3)v.pos).ToArray());
-            mesh.RecalculateNormals();
+            _computeShader.Dispatch(_kernelHeightMapTemp, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
         }
+
+        public void DispatchPersistent()
+        {
+            _computeShader.Dispatch(_kernelHeightMapPersistent, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
+        }
+        
+        public void DispatchClear()
+        {
+            _computeShader.Dispatch(_kernelHeightMapClear, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
+        }
+
 
         public void SetTextureResolution(int resolution) => _textureResolution = resolution;
         public void SetDebugMaterial(Material material) => _heightMapDebug = material;
@@ -108,11 +122,10 @@ namespace Scripts.Behaviours
         public void SetStrength(float strength) => _computeShader.SetFloat("_Power", strength);
         public void SetSmoothness(float smooth) => _computeShader.SetFloat("_Smooth", smooth);
 
-        public void Clear()
+        
+        public void RedrawMesh()
         {
-            _computeShader.Dispatch(_kernelHeightMapClear, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
             _computeShader.Dispatch(_kernel, dispatchCount, 1, 1);
-
             _vertexBuffer.GetData(meshVertData);
             var mesh = _meshFilter.mesh;
             mesh.MarkDynamic();
@@ -120,11 +133,6 @@ namespace Scripts.Behaviours
             mesh.RecalculateNormals();
         }
 
-        public void Rebuild()
-        {
-            _computeShader.Dispatch(_kernelHeightMapSave, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
-            _computeShader.SetVector("_MousePos", Vector4.positiveInfinity);
-            _computeShader.Dispatch(_kernelHeightMap, _dispatchCountHeightMap.x, _dispatchCountHeightMap.y, 1);
-        }
+        #endregion
     }
 }

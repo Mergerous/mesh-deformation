@@ -28,7 +28,8 @@ namespace Scripts.Managers
 
         public void ClearSurfaces()
         {
-            _surfaceRenderer.Clear();
+            _surfaceRenderer.DispatchClear();
+            _surfaceRenderer.RedrawMesh();
             _navMeshSurface.BuildNavMesh();
         }
 

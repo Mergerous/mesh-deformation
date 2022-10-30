@@ -24,7 +24,6 @@ namespace Scripts.Behaviours
                 if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit))
                 {
                     _hitCallback?.Invoke(hit);
-
                 }
             }
             if (Input.GetMouseButtonUp(0))
