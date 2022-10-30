@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: New Brush Configuration SO
   m_EditorClassIdentifier: 
   _brushSize: 0.01
-  _brushStrenght: 1.38
+  _brushStrenght: 1.45
   _smoothness: 2
