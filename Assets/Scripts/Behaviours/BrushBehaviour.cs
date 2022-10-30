@@ -9,6 +9,8 @@ namespace Scripts.Behaviours
         private event Action<RaycastHit> _hitCallback;
         private event Action<RaycastHit> _mouseUpCallback;
 
+        #region Unity
+
         private void Awake()
         {
             _camera = Camera.main;
@@ -35,6 +37,10 @@ namespace Scripts.Behaviours
             }
         }
 
+        #endregion
+
+        #region Public
+
         public void SetMouseUpCallback(Action<RaycastHit> callback)
         {
             _mouseUpCallback = callback;
@@ -44,5 +50,7 @@ namespace Scripts.Behaviours
         {
             _hitCallback = callback;
         }
+
+        #endregion
     }
 }

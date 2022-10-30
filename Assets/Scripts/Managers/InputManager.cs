@@ -12,10 +12,14 @@ namespace Scripts.Managers
 
         [Header("Components")]
         [SerializeField] private BrushBehaviour _brushBehaviour;
-        
+
+        #region Unity
+
         private void Awake()
         {
             var controller = new BrushController(_brushBehaviour, _brushConfigurationSo);
         }
+
+        #endregion
     }
 }

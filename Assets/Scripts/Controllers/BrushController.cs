@@ -19,6 +19,8 @@ namespace Scripts.Controllers
             _behaviour.SetMouseUpCallback(OnMouseUp);
         }
 
+        #region Private
+
         private void OnHit(RaycastHit hit)
         {
             if (hit.transform.TryGetComponent(out SurfaceRenderer renderer))
@@ -43,5 +45,7 @@ namespace Scripts.Controllers
                 surface.BuildNavMesh();
             }
         }
+
+        #endregion
     }
 }
