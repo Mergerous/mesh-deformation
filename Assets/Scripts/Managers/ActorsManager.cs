@@ -23,12 +23,20 @@ namespace Scripts.Managers
 
         private void Awake()
         {
-            foreach (var actor in _actors)
+            for (int i = 0; i < _actors.Length; i++)
             {
-                var controller = new ActorController(actor, _actorsConfigurationSo);
+                var controller = new ActorController(_actors[i], _actorsConfigurationSo);
                 controller.SetTargetRequest(OnTargetRequested);
                 _controllers.Add(controller);
             }
+            for (int i = 0; i < _actorsConfigurationSo.Count; i++)
+            {
+                if (i < _controllers.Count)
+                {
+                    _controllers[i].SetEnabled(true);
+                }
+            }
+            _unitCount = _actorsConfigurationSo.Count;
         }
 
         #endregion

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e65005e405c98d4a88e898de85505fb, type: 3}
   m_Name: New Actors Configuration SO
   m_EditorClassIdentifier: 
-  _count: 2
+  _count: 0
   _speed: 4
