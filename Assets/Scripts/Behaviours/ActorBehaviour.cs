@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Scripts.Behaviours
 {
@@ -10,15 +9,12 @@ namespace Scripts.Behaviours
         private Transform _currentTarget;
         private event Func<Transform> _targetRequest;
         private float _speed;
-        private Vector3 _initialPosition;
 
         #region Unity
 
         private void Start()
         {
             _currentTarget = _targetRequest.Invoke();
-            _initialPosition = transform.position;
-            // _agent.SetDestination(_currentTarget.position);
         }
 
         private void Update()
@@ -26,7 +22,6 @@ namespace Scripts.Behaviours
             FindTarget();
             RaycastSurface();
             MoveToTarget();
-
         }
 
         #endregion
@@ -67,7 +62,6 @@ namespace Scripts.Behaviours
                 Math.Abs(transform.position.z - _currentTarget.position.z) < 0.5f)
             {
                 _currentTarget = _targetRequest?.Invoke();
-                _initialPosition = transform.position;
             }
         }
 
