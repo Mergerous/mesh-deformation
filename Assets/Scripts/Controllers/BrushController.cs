@@ -1,7 +1,7 @@
 using Scripts.Behaviours;
 using Scripts.Configs;
-using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Scripts.Controllers
 {
@@ -41,11 +41,6 @@ namespace Scripts.Controllers
                 renderer.DispatchPersistent();
                 renderer.SetPosition(Vector3.positiveInfinity);
                 renderer.DispatchTemp();
-            }
-
-            if (hit.transform.TryGetComponent(out NavMeshSurface surface))
-            {
-                surface.BuildNavMesh();
             }
         }
 

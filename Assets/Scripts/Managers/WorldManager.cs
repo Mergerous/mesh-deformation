@@ -1,7 +1,7 @@
 using Scripts.Behaviours;
 using Scripts.Configs;
-using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Scripts.Managers
 {
@@ -12,8 +12,6 @@ namespace Scripts.Managers
 
         [Header("Components")] 
         [SerializeField] private SurfaceRenderer _surfaceRenderer;
-        [SerializeField] private NavMeshSurface _navMeshSurface;
-
         #region Unity
 
         private void Awake()
@@ -30,7 +28,6 @@ namespace Scripts.Managers
         {
             _surfaceRenderer.DispatchClear();
             _surfaceRenderer.RedrawMesh();
-            _navMeshSurface.BuildNavMesh();
         }
 
         #endregion

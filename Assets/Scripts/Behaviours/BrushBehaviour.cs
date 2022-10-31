@@ -4,7 +4,9 @@ using UnityEngine;
 namespace Scripts.Behaviours
 {
     public class BrushBehaviour : MonoBehaviour
-    { 
+    {
+        [Header("Options")]
+        [SerializeField] private LayerMask _layerMask;
         private Camera _camera;
         private event Action<RaycastHit> _hitCallback;
         private event Action<RaycastHit> _mouseUpCallback;
@@ -21,7 +23,7 @@ namespace Scripts.Behaviours
             if (Input.GetMouseButton(0))
             {
                 RaycastHit hit;
-                if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit))
+                if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 1000, _layerMask))
                 {
                     _hitCallback?.Invoke(hit);
                 }
@@ -29,7 +31,7 @@ namespace Scripts.Behaviours
             if (Input.GetMouseButtonUp(0))
             {
                 RaycastHit hit;
-                if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit))
+                if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 1000, _layerMask))
                 {
                     _mouseUpCallback?.Invoke(hit);
                 }

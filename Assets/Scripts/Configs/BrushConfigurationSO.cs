@@ -7,11 +7,11 @@ namespace Scripts.Configs
     public class BrushConfigurationSO : ScriptableObject
     {
         [SerializeField] private float _brushSize;
-        [SerializeField] private float _brushStrenght;
+        [SerializeField] private float _brushStrength;
         [SerializeField] private float _smoothness = 4f;
 
         public float BrushSize => _brushSize;
-        public float BrushStrength => _brushStrenght;
+        public float BrushStrength => _brushStrength;
         public float Smoothness => _smoothness;
     }
 }
