@@ -14,6 +14,7 @@ namespace Scripts.Behaviours
 
         [SerializeField] private ComputeShader _computeShader;
         [SerializeField] private MeshFilter _meshFilter;
+        [SerializeField] private MeshCollider _meshCollider;
 
 
         private ComputeBuffer _vertexBuffer;
@@ -131,6 +132,7 @@ namespace Scripts.Behaviours
             mesh.MarkDynamic();
             mesh.SetVertices(meshVertData.Select(v => (Vector3)v.pos).ToArray());
             mesh.RecalculateNormals();
+            _meshCollider.sharedMesh = mesh;
         }
 
         #endregion
