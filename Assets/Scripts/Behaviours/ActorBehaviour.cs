@@ -5,10 +5,10 @@ namespace Scripts.Behaviours
 {
     public class ActorBehaviour : MonoBehaviour
     {
-        [SerializeField] private LayerMask _layerMask;
+        private LayerMask _layerMask;
         private Transform _currentTarget;
-        private event Func<Transform> _targetRequest;
         private float _speed;
+        private event Func<Transform> _targetRequest;
 
         #region Unity
 
@@ -27,16 +27,9 @@ namespace Scripts.Behaviours
         #endregion
 
         #region Public
-
-        public void SetSpeed(float speed)
-        {
-            _speed = speed;
-        }
-
-        public void SetTargetRequest(Func<Transform> request)
-        {
-            _targetRequest = request;
-        }
+        public void SetLayerMask(LayerMask mask) => _layerMask = mask;
+        public void SetSpeed(float speed) => _speed = speed;
+        public void SetTargetRequest(Func<Transform> request) => _targetRequest = request;
 
         #endregion
 
@@ -44,8 +37,7 @@ namespace Scripts.Behaviours
 
         private void RaycastSurface()
         {
-            if (Physics.Raycast(transform.position, Vector3.up, out var hit,100, _layerMask)
-                || Physics.Raycast(transform.position, Vector3.down, out hit, 100, _layerMask))
+            if( Physics.Raycast(transform.position + Vector3.up * 100, Vector3.down, out var hit, 200, _layerMask))
             {
                 transform.position = new Vector3(transform.position.x, hit.point.y + transform.localScale.y, transform.position.z);
             }

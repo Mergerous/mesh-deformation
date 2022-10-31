@@ -5,8 +5,7 @@ namespace Scripts.Behaviours
 {
     public class BrushBehaviour : MonoBehaviour
     {
-        [Header("Options")]
-        [SerializeField] private LayerMask _layerMask;
+        private LayerMask _layerMask;
         private Camera _camera;
         private event Action<RaycastHit> _hitCallback;
         private event Action<RaycastHit> _mouseUpCallback;
@@ -42,6 +41,10 @@ namespace Scripts.Behaviours
 
         #region Public
 
+        public void SetLayerMask(LayerMask mask)
+        {
+            _layerMask = mask;
+        }
         public void SetMouseUpCallback(Action<RaycastHit> callback)
         {
             _mouseUpCallback = callback;

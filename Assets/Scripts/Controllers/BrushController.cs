@@ -15,6 +15,7 @@ namespace Scripts.Controllers
             _behaviour = behaviour;
             _configuration = configuration;
 
+            _behaviour.SetLayerMask(_configuration.LayerMask);
             _behaviour.SetHitCallback(OnHit);
             _behaviour.SetMouseUpCallback(OnMouseUp);
         }
