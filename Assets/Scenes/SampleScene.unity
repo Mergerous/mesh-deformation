@@ -650,7 +650,7 @@ GameObject:
   - component: {fileID: 701150242}
   - component: {fileID: 701150241}
   - component: {fileID: 701150239}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Actor (3)
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -684,9 +684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f0050cb36239e4492738522dc6e4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 4
 --- !u!23 &701150241
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1262,7 +1259,7 @@ GameObject:
   - component: {fileID: 1221054026}
   - component: {fileID: 1221054025}
   - component: {fileID: 1221054023}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Actor (2)
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -1296,9 +1293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f0050cb36239e4492738522dc6e4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 4
 --- !u!23 &1221054025
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1775,7 +1769,7 @@ GameObject:
   - component: {fileID: 1490240337}
   - component: {fileID: 1490240336}
   - component: {fileID: 1490240333}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Actor (1)
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -1794,9 +1788,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f0050cb36239e4492738522dc6e4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 4
 --- !u!23 &1490240336
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1906,9 +1897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448c670b1daea7241ac12ee871578761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1 &1592848146
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,7 +2111,7 @@ GameObject:
   - component: {fileID: 1840055182}
   - component: {fileID: 1840055181}
   - component: {fileID: 1840055184}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Actor
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -2207,9 +2195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f0050cb36239e4492738522dc6e4e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 4
 --- !u!1 &1857234585
 GameObject:
   m_ObjectHideFlags: 0

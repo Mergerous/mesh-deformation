@@ -15,6 +15,7 @@ namespace Scripts.Controllers
             _configuration = configuration;
             
             _behaviour.SetSpeed(_configuration.Speed);
+            _behaviour.SetLayerMask(_configuration.LayerMask);
         }
 
         #region Public
