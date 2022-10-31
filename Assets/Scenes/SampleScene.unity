@@ -1444,7 +1444,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _surfaceConfigurationSo: {fileID: 11400000, guid: 8495142b90a62e445b671a5f014f385b, type: 2}
   _surfaceRenderer: {fileID: 2136346269}
-  _navMeshSurface: {fileID: 0}
 --- !u!1 &1342949327
 GameObject:
   m_ObjectHideFlags: 0
